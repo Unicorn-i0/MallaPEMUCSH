@@ -124,13 +124,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const yaAprobado = cursosAprobados.has(curso.id);
         
         if (yaAprobado) {
-            cursosAprobados.delete(curso.id); // Permite des-aprobar
+            cursosAprobados.delete(curso.id);
+            actualizarEstado();
         } else if (prerequisitosCumplidos) {
             cursosAprobados.add(curso.id);
+            actualizarEstado();
         } else {
-            return; // No hacer nada si está bloqueado
+            // NUEVA LÓGICA: Mostrar prerrequisitos faltantes
+            const totalCreditos = calcularCreditosAprobados();
+            const faltantes = curso.prerequisitos.filter(pr => {
+                 if (pr.startsWith('CREDITOS_')) {
+                    const creditosNecesarios = parseInt(pr.split('_')[1], 10);
+                    return totalCreditos < creditosNecesarios;
+                }
+                return !cursosAprobados.has(pr);
+            });
+
+            const nombresFaltantes = faltantes.map(prId => {
+                if (prId.startsWith('CREDITOS_')) {
+                    const creditosNecesarios = prId.split('_')[1];
+                    return `Tener ${creditosNecesarios} créditos aprobados (tienes ${totalCreditos}).`;
+                }
+                const prereqCurso = cursosDB.find(c => c.id === prId);
+                return prereqCurso ? prereqCurso.nombre : prId;
+            });
+
+            if (nombresFaltantes.length > 0) {
+                alert(`Prerrequisitos faltantes para "${curso.nombre}":\n\n• ${nombresFaltantes.join('\n• ')}`);
+            }
         }
-        actualizarEstado();
     };
 
     const actualizarEstado = () => {
