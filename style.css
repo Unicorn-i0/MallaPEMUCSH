@@ -1,0 +1,52 @@
+body {
+  font-family: sans-serif;
+  background: #f8f9fa;
+  padding: 20px;
+}
+#malla {
+  display: flex;
+  gap: 1rem;
+  margin-top: 20px;
+}
+.columna {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 250px;
+}
+.columna h2 {
+  text-align: center;
+}
+.curso {
+  border-radius: 8px;
+  padding: 10px;
+  color: white;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  opacity: 1;
+}
+.curso.bloqueado {
+  background: #ccc;
+  color: #555;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.curso.hito {
+  border: 3px solid #ffc107;
+}
+.color {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  margin-right: 5px;
+  border-radius: 4px;
+}
+.disciplinar { background: #003865; }
+.pedagogico  { background: #006341; }
+.general     { background: #757575; }
+.hito-glosa {
+  background: #ffc107;
+  padding: 0 5px;
+  border-radius: 4px;
+}
